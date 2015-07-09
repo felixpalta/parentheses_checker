@@ -44,37 +44,18 @@ private:
 
     using BracePair = pair<char, char>;
 
-    class CheckOpening
-    {
-        char c_;
-    public:
-        CheckOpening(char c) : c_(c) {}
-        bool operator()(const BracePair& p)
-        {
-            return p.first == c_;
-        }
-    };
-
-    class CheckClosing
-    {
-        char c_;
-    public:
-        CheckClosing(char c) : c_(c) {}
-        bool operator()(const BracePair& p)
-        {
-            return p.second == c_;
-        }
-    };
-
-
     bool is_opening(char c) const
     {
-        auto iter = find_if(begin(used_pairs), end(used_pairs),CheckOpening{c});
+        auto f = [=](const BracePair& p) {return c == p.first;};
+
+        auto iter = find_if(begin(used_pairs), end(used_pairs), f);
         return iter != end(used_pairs);
     }
     bool is_closing(char c) const
     {
-        auto iter = find_if(begin(used_pairs), end(used_pairs), CheckClosing{c});
+        auto f = [=](const BracePair& p) {return c == p.second;};
+
+        auto iter = find_if(begin(used_pairs), end(used_pairs), f);
         return iter != end(used_pairs);
     }
 
